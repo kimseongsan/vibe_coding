@@ -1,0 +1,693 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Nanum Pen Script', cursive;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.5s ease;
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+                url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') center/cover no-repeat;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    backdrop-filter: blur(2px);
+    z-index: 1;
+}
+
+/* 메인 화면 */
+.main-screen {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.container {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 20px;
+    max-width: 90%;
+    width: 100%;
+}
+
+.typing-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    min-height: 120px;
+}
+
+.typing-text {
+    font-size: 2.5rem;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    line-height: 1.4;
+    opacity: 0;
+    word-break: keep-all;
+    white-space: nowrap;
+}
+
+.cursor {
+    font-size: 2.5rem;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    animation: blink 1s infinite;
+    margin-left: 2px;
+}
+
+@keyframes blink {
+    0%, 50% {
+        opacity: 1;
+    }
+    51%, 100% {
+        opacity: 0;
+    }
+}
+
+/* 설정 패널 */
+.settings-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.settings-panel.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.settings-content {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #eee;
+}
+
+.settings-header h2 {
+    font-family: 'Nanum Pen Script', cursive;
+    font-size: 1.8rem;
+    color: #333;
+    margin: 0;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+    background: #f0f0f0;
+    color: #333;
+}
+
+.setting-group {
+    margin-bottom: 20px;
+}
+
+.setting-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #333;
+    font-size: 1rem;
+}
+
+.setting-group textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-family: 'Nanum Pen Script', cursive;
+    font-size: 1rem;
+    resize: vertical;
+    transition: border-color 0.2s ease;
+}
+
+.setting-group textarea:focus {
+    outline: none;
+    border-color: #007AFF;
+}
+
+.setting-group input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+}
+
+.setting-group input[type="text"]:focus {
+    outline: none;
+    border-color: #007AFF;
+}
+
+.setting-group select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: white;
+    cursor: pointer;
+}
+
+.setting-group input[type="range"] {
+    width: 70%;
+    margin-right: 10px;
+}
+
+#speed-value {
+    font-weight: 500;
+    color: #007AFF;
+}
+
+.background-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.bg-option {
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.bg-option:hover {
+    border-color: #007AFF;
+    background: #f0f8ff;
+}
+
+.bg-option.active {
+    border-color: #007AFF;
+    background: #007AFF;
+    color: white;
+}
+
+.apply-btn {
+    width: 100%;
+    padding: 15px;
+    background: #007AFF;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.apply-btn:hover {
+    background: #0056CC;
+}
+
+/* 컨트롤 패널 */
+.control-panel {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 100;
+}
+
+/* 컨트롤 버튼들 */
+.control-btn {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(20px);
+    color: white;
+    font-size: 1.6rem;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+.control-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.control-btn:hover::before {
+    opacity: 1;
+}
+
+.control-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.08) translateY(-2px);
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.25);
+}
+
+.control-btn:active {
+    transform: scale(0.95);
+}
+
+/* 개별 버튼 스타일 */
+.settings-btn {
+    background: rgba(255, 182, 193, 0.15);
+    border: 1px solid rgba(255, 182, 193, 0.2);
+}
+
+.settings-btn:hover {
+    background: rgba(255, 182, 193, 0.25);
+    box-shadow: 0 15px 45px rgba(255, 182, 193, 0.3);
+}
+
+.play-pause-btn {
+    background: rgba(173, 216, 230, 0.15);
+    border: 1px solid rgba(173, 216, 230, 0.2);
+}
+
+.play-pause-btn:hover {
+    background: rgba(173, 216, 230, 0.25);
+    box-shadow: 0 15px 45px rgba(173, 216, 230, 0.3);
+}
+
+
+
+/* 버튼 아이콘 */
+.icon {
+    font-size: 1.8rem;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+/* 툴팁 */
+.tooltip {
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-family: 'Noto Sans KR', sans-serif;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    backdrop-filter: blur(10px);
+}
+
+.settings-btn:hover .tooltip,
+.play-pause-btn:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+    bottom: -35px;
+}
+
+/* 텍스트 이펙트들 */
+.effect-fade {
+    animation: fadeIn 0.5s ease-in forwards;
+}
+
+.effect-slide {
+    animation: slideIn 0.5s ease-out forwards;
+}
+
+.effect-bounce {
+    animation: bounceIn 0.6s ease-out forwards;
+}
+
+.effect-glow {
+    animation: glowIn 0.5s ease-in forwards;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3) translateY(-50px);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.1) translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes glowIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 2px 2px 4px rgba(0, 0, 0, 0.7);
+    }
+}
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+    .typing-text {
+        font-size: 2rem;
+        white-space: normal;
+        word-break: keep-all;
+    }
+    
+    .cursor {
+        font-size: 2rem;
+    }
+    
+    .container {
+        padding: 15px;
+    }
+    
+    .settings-content {
+        padding: 20px;
+        margin: 20px;
+    }
+    
+    .settings-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .background-options {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* 모바일에서 컨트롤 패널 조정 */
+    .control-panel {
+        bottom: 20px;
+        right: 20px;
+        gap: 12px;
+    }
+    
+    .control-btn {
+        width: 55px;
+        height: 55px;
+        font-size: 1.4rem;
+    }
+    
+    .icon {
+        font-size: 1.4rem;
+    }
+    
+    .tooltip {
+        font-size: 0.7rem;
+        padding: 4px 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .typing-text {
+        font-size: 1.5rem;
+    }
+    
+    .cursor {
+        font-size: 1.5rem;
+    }
+    
+    .typing-container {
+        min-height: 80px;
+    }
+}
+
+/* 부드러운 전환 효과 */
+.typing-text, .cursor {
+    transition: all 0.3s ease;
+}/* 새로운 텍
+스트 이펙트들 */
+.effect-typewriter {
+    animation: typewriterIn 0.8s steps(20) forwards;
+    border-right: 2px solid white;
+}
+
+.effect-wave {
+    animation: waveIn 1s ease-in-out forwards;
+}
+
+@keyframes typewriterIn {
+    from {
+        width: 0;
+        opacity: 1;
+    }
+    to {
+        width: 100%;
+        opacity: 1;
+    }
+}
+
+@keyframes waveIn {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) rotateX(90deg);
+    }
+    50% {
+        opacity: 0.7;
+        transform: translateY(-10px) rotateX(45deg);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) rotateX(0deg);
+    }
+}
+
+/* 배경 애니메이션 컨테이너 */
+.animation-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+/* 눈 내리기 애니메이션 */
+.snowflake {
+    position: absolute;
+    color: white;
+    font-size: 1rem;
+    animation: snowfall linear infinite;
+    opacity: 0.8;
+}
+
+@keyframes snowfall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* 별 반짝이기 애니메이션 */
+.star {
+    position: absolute;
+    color: #FFD700;
+    font-size: 0.8rem;
+    animation: starTwinkle 2s ease-in-out infinite;
+}
+
+@keyframes starTwinkle {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+/* 꽃잎 떨어지기 애니메이션 */
+.petal {
+    position: absolute;
+    color: #FFB6C1;
+    font-size: 1.2rem;
+    animation: petalFall linear infinite;
+}
+
+@keyframes petalFall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* 비눗방울 애니메이션 */
+.bubble {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2), transparent);
+    animation: bubbleFloat linear infinite;
+}
+
+@keyframes bubbleFloat {
+    0% {
+        transform: translateY(100vh) scale(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh) scale(1);
+        opacity: 0;
+    }
+}
+
+/* 반딧불이 애니메이션 */
+.firefly {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #FFFF00;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #FFFF00, 0 0 20px #FFFF00;
+    animation: fireflyMove 8s ease-in-out infinite;
+}
+
+@keyframes fireflyMove {
+    0%, 100% {
+        transform: translate(0, 0);
+        opacity: 0.3;
+    }
+    25% {
+        transform: translate(100px, -50px);
+        opacity: 1;
+    }
+    50% {
+        transform: translate(-50px, -100px);
+        opacity: 0.5;
+    }
+    75% {
+        transform: translate(-100px, 50px);
+        opacity: 1;
+    }
+}
+
+/* 체크박스 스타일링 */
+.setting-group input[type="checkbox"] {
+    margin-right: 8px;
+    transform: scale(1.2);
+}
+
+.setting-group label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+/* 볼륨 값 표시 */
+#volume-value {
+    font-weight: 500;
+    color: #007AFF;
+}
